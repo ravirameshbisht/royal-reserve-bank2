@@ -52,19 +52,25 @@ public class SecurityConfig {
         final DecodedJWT jwt = JWT.decode(encodedJwt);
         RSAPublicKey publicKey = loadPublicKey(jwt);
 
+//        serverHttpSecurity
+//                .csrf().disable()
+//                .addFilterAt(jwtFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
+//                .oauth2ResourceServer()
+//                .jwt()
+//                .publicKey(publicKey)
+//                .and()
+//                .and()
+//                .authorizeExchange(exchange ->
+//                        exchange.pathMatchers("/eureka/**", "/discovery-server/**")
+//                                .permitAll()
+//                                .anyExchange()
+//                                .authenticated());
+        
         serverHttpSecurity
-                .csrf().disable()
-                .addFilterAt(jwtFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
-                .oauth2ResourceServer()
-                .jwt()
-                .publicKey(publicKey)
-                .and()
-                .and()
-                .authorizeExchange(exchange ->
-                        exchange.pathMatchers("/eureka/**", "/discovery-server/**")
-                                .permitAll()
-                                .anyExchange()
-                                .authenticated());
+        .csrf().disable()
+        .authorizeExchange(exchange -> exchange.anyExchange().permitAll());
+
+        
         return serverHttpSecurity.build();
     }
 
